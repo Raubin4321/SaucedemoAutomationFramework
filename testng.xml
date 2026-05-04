@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="SaucedemoSuite" parallel="classes" thread-count="4" verbose="2">
+
+    <listeners>
+        <listener class-name="com.saucedemo.listeners.TestListener"/>
+    </listeners>
+
+    <test name="SaucedemoTest">
+        <classes>
+            <class name="com.saucedemo.tests.LoginPageTest"/>
+            <class name="com.saucedemo.tests.InventoryPageTest"/>
+            <class name="com.saucedemo.tests.CartPageTest"/>
+            <class name="com.saucedemo.tests.CheckoutPageTest"/>
+        </classes>
+    </test>
+
+</suite>
