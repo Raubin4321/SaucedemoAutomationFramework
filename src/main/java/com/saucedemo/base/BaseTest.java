@@ -13,17 +13,24 @@ import com.saucedemo.utilities.ConfigReader;
 public class BaseTest {
 
 	private static final Logger log = LogManager.getLogger(BaseTest.class);
-
 	protected WebDriver driver;
 
 	@BeforeMethod
 	public void setUp() {
+		
+		String browser;
+		if(System.getProperty("browser") != null) {
+			browser = System.getProperty("browser"); // from command line
+		}else {
+		    browser = ConfigReader.getProperty("browser");  // from config.properties
+		}
+		
 		log.info("===== Test Started: {} =====", Thread.currentThread().getName());
 		
-		DriverFactory.initDriver(ConfigReader.getProperty("browser"));
+		DriverFactory.initDriver(browser);
 		driver = DriverFactory.getDriver();
 		
-		log.info("Navigating to URL: {}", ConfigReader.getProperty("url"));
+		log.info("Navigating to URL: [{}]", ConfigReader.getProperty("url"));
 		driver.get(ConfigReader.getProperty("url"));
 	}
 

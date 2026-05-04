@@ -12,6 +12,8 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import com.saucedemo.utilities.ConfigReader;
+
 public class DriverFactory {
 
 	private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
@@ -24,41 +26,52 @@ public class DriverFactory {
 
 	public static void initDriver(String browser) {
 
+		boolean isHeadless;
+		if (System.getProperty("headless") != null) {
+			isHeadless = Boolean.parseBoolean(System.getProperty("headless"));
+		} else {
+			isHeadless = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
+		}
+
+		log.info("Initializing browser: [{}] | Headless: [{}] | Thread ID: [{}]", browser, isHeadless,
+				Thread.currentThread().getId());
+
 		WebDriver webDriver;
-		log.info("Initializing browser: {} | Thread ID: {}", browser, Thread.currentThread().getId());
-		
+
 		try {
 			switch (browser.toLowerCase()) {
 
 			case "chrome":
-				webDriver = new ChromeDriver(getChromeOptions());
+				webDriver = new ChromeDriver(getChromeOptions(isHeadless));
 				break;
 
 			case "firefox":
-				webDriver = new FirefoxDriver(getFirefoxOptions());
+				webDriver = new FirefoxDriver(getFirefoxOptions(isHeadless));
 				break;
 
 			case "edge":
-				webDriver = new EdgeDriver(getEdgeOptions());
+				webDriver = new EdgeDriver(getEdgeOptions(isHeadless));
 				break;
 
 			default:
-				log.error("Invalid browser: {} ", browser);
+				log.error("Invalid browser: [{}] ", browser);
 				throw new IllegalArgumentException("Invalid Browser : " + browser);
 
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize driver: " + browser, e);
 		}
-		
-		webDriver.manage().window().maximize();
+
+		// Maximize only when NOT headless
+		if (!isHeadless) {
+			webDriver.manage().window().maximize();
+		}
 		webDriver.manage().deleteAllCookies();
 
-		log.info("Browser launched successfully for Thread: {}", Thread.currentThread().getId());
+		log.info("Browser launched successfully | Thread ID: [{}]", Thread.currentThread().getId());
 		driver.set(webDriver);
 	}
 
-	// Get Driver (Singleton-like access)
 	public static WebDriver getDriver() {
 		return driver.get();
 	}
@@ -67,12 +80,14 @@ public class DriverFactory {
 	public static void quitDriver() {
 
 		if (driver.get() != null) {
+			log.info("Closing browser | Thread ID: [{}]", Thread.currentThread().getId());
 			driver.get().quit();
-			driver.remove(); // avoid memory leak
+			driver.remove(); // prevents memory leak
+			log.info("Browser closed successfully | Thread ID: [{}]", Thread.currentThread().getId());
 		}
 	}
 
-	private static ChromeOptions getChromeOptions() {
+	private static ChromeOptions getChromeOptions(boolean isHeadless) {
 		ChromeOptions chromeOptions = new ChromeOptions();
 
 		// Disable password manager popup
@@ -86,18 +101,23 @@ public class DriverFactory {
 		// Fix parallel + password leak popup
 		chromeOptions.addArguments("--guest");
 		chromeOptions.addArguments("--disable-features=PasswordLeakDetection,PasswordCheck");
+
+		// Unique user data dir per thread — avoids parallel conflicts
 		String userDir = System.getProperty("java.io.tmpdir") + "chrome-test-" + Thread.currentThread().getId();
 		chromeOptions.addArguments("--user-data-dir=" + userDir);
 
-		/*
-		 * Headless chromeOptions.addArguments("--headless=new");
-		 * chromeOptions.addArguments("--window-size=1920,1080");
-		 */
+		if (isHeadless) {
+			log.info("Running Chrome in headless mode");
+			chromeOptions.addArguments("--headless"); // no UI needed
+			chromeOptions.addArguments("--no-sandbox"); // required for Jenkins
+			chromeOptions.addArguments("--disable-dev-shm-usage"); // prevents crashes
+			chromeOptions.addArguments("--window-size=1920,1080");
+		}
 
 		return chromeOptions;
 	}
 
-	private static FirefoxOptions getFirefoxOptions() {
+	private static FirefoxOptions getFirefoxOptions(boolean isHeadless) {
 		FirefoxOptions firefoxOptions = new FirefoxOptions();
 
 		// disable save password
@@ -110,14 +130,17 @@ public class DriverFactory {
 		// Disable password breach alerts (important)
 		firefoxOptions.addPreference("signon.management.page.breach-alerts.enabled", false);
 
-		/*
-		 * Headless firefoxOptions.addArguments("-headless");
-		 */
+		if (isHeadless) {
+			log.info("Running Firefox in headless mode");
+			firefoxOptions.addArguments("--headless");
+			firefoxOptions.addArguments("--width=1920");
+			firefoxOptions.addArguments("--height=1080");
+		}
 
 		return firefoxOptions;
 	}
 
-	private static EdgeOptions getEdgeOptions() {
+	private static EdgeOptions getEdgeOptions(boolean isHeadless) {
 		EdgeOptions edgeOptions = new EdgeOptions();
 
 		// Disable popups
@@ -137,10 +160,13 @@ public class DriverFactory {
 		String userDir = System.getProperty("java.io.tmpdir") + "edge-test-" + Thread.currentThread().getId();
 		edgeOptions.addArguments("--user-data-dir=" + userDir);
 
-		/*
-		 * Headless edgeOptions.addArguments("--headless=new");
-		 * edgeOptions.addArguments("--window-size=1920,1080");
-		 */
+		if (isHeadless) {
+			log.info("Running Edge in headless mode");
+			edgeOptions.addArguments("--headless");
+			edgeOptions.addArguments("--no-sandbox");
+			edgeOptions.addArguments("--disable-dev-shm-usage");
+			edgeOptions.addArguments("--window-size=1920,1080");
+		}
 
 		return edgeOptions;
 	}
