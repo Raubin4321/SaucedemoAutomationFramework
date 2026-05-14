@@ -5,11 +5,24 @@
         <listener class-name="com.saucedemo.listeners.TestListener"/>
     </listeners>
 
-    <test name="SaucedemoTest">
+    <test name="SaucedemoTest_Chrome">
+        <parameter name="browser" value="chrome"/>
         <classes>
             <class name="com.saucedemo.tests.LoginPageTest"/>
             <class name="com.saucedemo.tests.InventoryPageTest"/>
+        </classes>
+    </test>
+
+    <test name="SaucedemoTest_Firefox">
+        <parameter name="browser" value="firefox"/>
+        <classes>
             <class name="com.saucedemo.tests.CartPageTest"/>
+        </classes>
+    </test>
+
+    <test name="SaucedemoTest_Edge">
+        <parameter name="browser" value="edge"/>
+        <classes>
             <class name="com.saucedemo.tests.CheckoutPageTest"/>
         </classes>
     </test>
