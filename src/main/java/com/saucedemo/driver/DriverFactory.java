@@ -30,13 +30,18 @@ public class DriverFactory {
 	public static void initDriver(String browser) {
 
 		boolean isHeadless;
-		if (System.getProperty("headless") != null) {
+		if(System.getProperty("headless") != null) {
 			isHeadless = Boolean.parseBoolean(System.getProperty("headless"));
 		} else {
 			isHeadless = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
 		}
 
-		boolean seleniumGrid = Boolean.parseBoolean(ConfigReader.getProperty("seleniumGrid"));
+		boolean seleniumGrid;
+		if(System.getProperty("seleniumGrid") != null) {
+			seleniumGrid = Boolean.parseBoolean(System.getProperty("seleniumGrid"));
+		} else {
+			seleniumGrid = Boolean.parseBoolean(ConfigReader.getProperty("seleniumGrid"));
+		}
 
 	    log.info("Initializing browser: [{}] | Headless: [{}] | Grid: [{}] | Thread ID: [{}]",
 	            browser, isHeadless, seleniumGrid, Thread.currentThread().getId());
@@ -44,7 +49,7 @@ public class DriverFactory {
 		WebDriver webDriver;
 
 		try {
-			if (seleniumGrid) {
+			if(seleniumGrid) {
 	            String gridURL = ConfigReader.getProperty("gridURL");
 	            log.info("Connecting to Selenium Grid at: [{}]", gridURL);
 	            webDriver = createRemoteDriver(browser, isHeadless, gridURL);

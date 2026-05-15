@@ -90,7 +90,7 @@
 				<version>3.2.5</version>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>testng.xml</suiteXmlFile>
+						<suiteXmlFile>${suite}.xml</suiteXmlFile>
 					</suiteXmlFiles>
 					<!-- Shows test output in Jenkins console -->
 					<testFailureIgnore>false</testFailureIgnore>
