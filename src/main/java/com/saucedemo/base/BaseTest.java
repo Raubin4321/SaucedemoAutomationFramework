@@ -20,11 +20,10 @@ public class BaseTest {
 	@BeforeMethod
 	public void setUp(@Optional String browserParam) {
 		
-		String browser;
-		if(System.getProperty("browser") != null) {
-			browser = System.getProperty("browser"); // from command line
-		} else if (browserParam != null) {
-			browser = browserParam;                 // testng.xml <parameter>
+		String browser = System.getProperty("browser");
+		
+		if(browser == null || browser.isBlank() || browser.equalsIgnoreCase("auto")) {
+			browser = browserParam;   // testng.xml <parameter>
 		} else {
 		    browser = ConfigReader.getProperty("browser");  // from config.properties
 		}
