@@ -23,9 +23,12 @@ public class BaseTest {
 		String browser = System.getProperty("browser");
 		
 		if(browser == null || browser.isBlank() || browser.equalsIgnoreCase("auto")) {
-			browser = browserParam;   // testng.xml <parameter>
-		} else {
-		    browser = ConfigReader.getProperty("browser");  // from config.properties
+			
+			if (browserParam != null && !browserParam.isBlank()) {
+	            browser = browserParam;   // testng.xml <parameter>
+	        } else {
+	        	browser = ConfigReader.getProperty("browser");  // from config.properties
+	        }   	
 		}
 		
 		log.info("===== Test Started: {} =====", Thread.currentThread().getName());
