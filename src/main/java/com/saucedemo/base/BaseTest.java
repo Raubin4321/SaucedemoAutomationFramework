@@ -20,16 +20,16 @@ public class BaseTest {
 	@BeforeMethod
 	public void setUp(@Optional String browserParam) {
 		
-		String browser = System.getProperty("browser");
-		
-		if(browser == null || browser.isBlank() || browser.equalsIgnoreCase("auto")) {
-			
-			if (browserParam != null && !browserParam.isBlank()) {
-	            browser = browserParam;   // testng.xml <parameter>
-	        } else {
-	        	browser = ConfigReader.getProperty("browser");  // from config.properties
-	        }   	
-		}
+		String browser;
+	    String sysBrowser = System.getProperty("browser");
+
+	    if (sysBrowser != null && !sysBrowser.isEmpty() && !sysBrowser.equalsIgnoreCase("(none)")) {
+	        browser = sysBrowser;                           // 1. Jenkins -Dbrowser=chrome/firefox/edge
+	    } else if (browserParam != null && !browserParam.isEmpty()) {
+	        browser = browserParam;                         // 2. testng.xml <parameter name="browser">
+	    } else {
+	        browser = ConfigReader.getProperty("browser");  // 3. config.properties fallback
+	    }
 		
 		log.info("===== Test Started: {} =====", Thread.currentThread().getName());
 		
