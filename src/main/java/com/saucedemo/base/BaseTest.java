@@ -21,14 +21,20 @@ public class BaseTest {
 	public void setUp(@Optional String browserParam) {
 		
 		String sysBrowser = System.getProperty("browser");
-		String browser;
 
+	    // DEBUG — remove after fix confirmed
+	    log.info("DEBUG | sysBrowser=[{}] | browserParam=[{}]", sysBrowser, browserParam);
+
+	    String browser;
 	    if (sysBrowser != null && !sysBrowser.isEmpty() && !sysBrowser.equalsIgnoreCase("(none)")) {
-	        browser = sysBrowser;                           // 1. Jenkins -Dbrowser=chrome/firefox/edge
+	        browser = sysBrowser;
+	        log.info("Browser source: CLI/Jenkins → [{}]", browser);
 	    } else if (browserParam != null && !browserParam.isEmpty()) {
-	        browser = browserParam;                         // 2. testng.xml <parameter name="browser">
+	        browser = browserParam;
+	        log.info("Browser source: testng.xml → [{}]", browser);
 	    } else {
-	        browser = ConfigReader.getProperty("browser");  // 3. config.properties fallback
+	        browser = ConfigReader.getProperty("browser");
+	        log.info("Browser source: config.properties → [{}]", browser);
 	    }
 		
 		log.info("===== Test Started: {} =====", Thread.currentThread().getName());
