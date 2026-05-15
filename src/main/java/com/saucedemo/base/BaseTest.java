@@ -21,16 +21,12 @@ public class BaseTest {
 	public void setUp(@Optional String browserParam) {
 		
 		String sysBrowser = System.getProperty("browser");
-
-	    // DEBUG — remove after fix confirmed
-	    log.info("DEBUG | sysBrowser=[{}] | browserParam=[{}]", sysBrowser, browserParam);
-
 	    String browser;
 	    
-	    if (sysBrowser != null && !sysBrowser.isEmpty() && !sysBrowser.equalsIgnoreCase("(none)")) {
+	    if (sysBrowser != null && !sysBrowser.isEmpty() && !sysBrowser.equalsIgnoreCase("none")) {
 	        browser = sysBrowser;
 	        log.info("Browser source: CLI/Jenkins → [{}]", browser);
-	    } else if (browserParam != null && !browserParam.isEmpty() && !browserParam.equalsIgnoreCase("(none)")) {
+	    } else if (browserParam != null && !browserParam.isEmpty() && !browserParam.equalsIgnoreCase("none")) {
 	        browser = browserParam;
 	        log.info("Browser source: testng.xml → [{}]", browser);
 	    } else {
