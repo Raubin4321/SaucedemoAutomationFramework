@@ -26,10 +26,11 @@ public class BaseTest {
 	    log.info("DEBUG | sysBrowser=[{}] | browserParam=[{}]", sysBrowser, browserParam);
 
 	    String browser;
+	    
 	    if (sysBrowser != null && !sysBrowser.isEmpty() && !sysBrowser.equalsIgnoreCase("(none)")) {
 	        browser = sysBrowser;
 	        log.info("Browser source: CLI/Jenkins → [{}]", browser);
-	    } else if (browserParam != null && !browserParam.isEmpty()) {
+	    } else if (browserParam != null && !browserParam.isEmpty() && !browserParam.equalsIgnoreCase("(none)")) {
 	        browser = browserParam;
 	        log.info("Browser source: testng.xml → [{}]", browser);
 	    } else {
