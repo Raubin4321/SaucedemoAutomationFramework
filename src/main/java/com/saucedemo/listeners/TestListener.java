@@ -10,8 +10,8 @@ import org.testng.ITestResult;
 import org.testng.annotations.ITestAnnotation;
 
 import com.aventstack.extentreports.ExtentTest;
-import com.saucedemo.utilities.ExtentManager;
-import com.saucedemo.utilities.ScreenshotUtil;
+import com.saucedemo.utils.ExtentManager;
+import com.saucedemo.utils.ScreenshotUtil;
 
 public class TestListener implements ITestListener, IAnnotationTransformer {
 

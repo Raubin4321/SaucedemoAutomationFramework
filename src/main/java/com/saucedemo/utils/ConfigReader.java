@@ -1,4 +1,4 @@
-package com.saucedemo.utilities;
+package com.saucedemo.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;

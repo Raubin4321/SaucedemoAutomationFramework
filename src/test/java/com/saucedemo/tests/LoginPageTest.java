@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 import com.saucedemo.base.BaseTest;
 import com.saucedemo.pages.LoginPage;
-import com.saucedemo.utilities.ExcelDataProvider;
+import com.saucedemo.utils.ExcelDataProvider;
 
 public class LoginPageTest extends BaseTest {
 	

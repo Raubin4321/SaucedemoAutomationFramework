@@ -9,7 +9,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import com.saucedemo.driver.DriverFactory;
-import com.saucedemo.utilities.ConfigReader;
+import com.saucedemo.utils.ConfigReader;
 
 public class BaseTest {
 

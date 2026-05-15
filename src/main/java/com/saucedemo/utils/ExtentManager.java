@@ -1,4 +1,4 @@
-package com.saucedemo.utilities;
+package com.saucedemo.utils;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -20,6 +20,8 @@ public class ExtentManager {
 
 			spark.config().setReportName("Automation Test Report");
 			spark.config().setDocumentTitle("SauceDemo Project Report");
+			spark.config().setCss(null);
+			spark.config().setJs(null);
 
 			extent = new ExtentReports();
 			extent.attachReporter(spark);

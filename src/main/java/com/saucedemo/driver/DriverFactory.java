@@ -15,7 +15,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.saucedemo.utilities.ConfigReader;
+import com.saucedemo.utils.ConfigReader;
 
 public class DriverFactory {
 
