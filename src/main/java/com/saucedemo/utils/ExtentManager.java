@@ -20,8 +20,7 @@ public class ExtentManager {
 
 			spark.config().setReportName("Automation Test Report");
 			spark.config().setDocumentTitle("SauceDemo Project Report");
-			spark.config().setCss(null);
-			spark.config().setJs(null);
+			spark.config().enableOfflineMode(true);  // embeds all CSS/JS inline
 
 			extent = new ExtentReports();
 			extent.attachReporter(spark);
