@@ -20,8 +20,8 @@ public class BaseTest {
 	@BeforeMethod
 	public void setUp(@Optional String browserParam) {
 		
+		String sysBrowser = System.getProperty("browser");
 		String browser;
-	    String sysBrowser = System.getProperty("browser");
 
 	    if (sysBrowser != null && !sysBrowser.isEmpty() && !sysBrowser.equalsIgnoreCase("(none)")) {
 	        browser = sysBrowser;                           // 1. Jenkins -Dbrowser=chrome/firefox/edge
