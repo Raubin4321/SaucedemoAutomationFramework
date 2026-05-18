@@ -2,6 +2,7 @@ package com.saucedemo.utils;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 public class ExtentManager {
@@ -13,8 +14,7 @@ public class ExtentManager {
 
 		if (extent == null) {
 
-			// String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new
-			// Date());
+			// String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 			String reportPath = System.getProperty("user.dir") + "/reports/extentReport.html";
 			ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
 
@@ -40,5 +40,24 @@ public class ExtentManager {
 	public static void unload() {
 		test.remove();
 	}
+	
+	// Reporting Methods
+    public static void pass(String message) {
+        if (test.get() != null) {
+            test.get().log(Status.PASS, message);
+        }
+    }
+
+    public static void fail(String message) {
+        if (test.get() != null) {
+            test.get().log(Status.FAIL, message);
+        }
+    }
+
+    public static void warning(String message) {
+        if (test.get() != null) {
+            test.get().log(Status.WARNING, message);
+        }
+    }
 	
 }

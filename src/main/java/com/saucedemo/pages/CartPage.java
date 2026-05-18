@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.saucedemo.utils.ExtentManager;
+
 public class CartPage extends BasePage {
 	
 	private By cartItems = By.className("cart_item");
@@ -19,10 +21,13 @@ public class CartPage extends BasePage {
     }
 	
 	public int getCartItemsCount() {
-	    return getElements(cartItems).size();
+		int count = getElements(cartItems).size();
+        ExtentManager.pass("Cart contains " + count + " item(s)");
+        return count;
 	}
 
 	public void removeItemByName(String productName) {
+		log.info("Removing item from cart: [{}]", productName);
 	    List<WebElement> items = getElements(cartItems);
 
 	    for (WebElement item : items) {
@@ -30,19 +35,24 @@ public class CartPage extends BasePage {
 
 	        if (name.equalsIgnoreCase(productName)) {
 	            item.findElement(removeBtn).click();
-	            return;
-	        }
-	    }
-	    throw new RuntimeException("Item not found: " + productName);
+	            ExtentManager.pass("Product '" + productName + "' removed from cart successfully");
+                return;
+            }
+        }
+        ExtentManager.fail("Product '" + productName + "' was not found in the cart to remove");
+        throw new RuntimeException("Item not found: " + productName);
 	}
 
 	public void clickContinueShopping() {
 		log.info("Clicking Continue Shopping — returning to Inventory page");
 	    click(continueShopping);
-	}
+	    ExtentManager.pass("Clicked 'Continue Shopping' — returned to Products page");
+    }
 	
 	public CheckoutPage clickCheckout() {
-	    click(checkoutBtn);
-	    return new CheckoutPage(driver);
+		log.info("Clicking Checkout button");
+        click(checkoutBtn);
+        ExtentManager.pass("Navigated to Checkout page to enter delivery information");
+        return new CheckoutPage(driver);
 	}
 }
