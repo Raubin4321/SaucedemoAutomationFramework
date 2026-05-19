@@ -47,6 +47,12 @@ public class ExtentManager {
             test.get().log(Status.PASS, message);
         }
     }
+    
+    public static void info(String message) {
+        if (test.get() != null) {
+            test.get().log(Status.INFO, message);
+        }
+    }
 
     public static void fail(String message) {
         if (test.get() != null) {

@@ -39,7 +39,7 @@ public class LoginPage extends BasePage {
         log.info("Clicking Login button");
         click(loginBtn);
         
-        ExtentManager.warning("Login attempted with invalid credentials for user: '" + user + "'");
+        ExtentManager.info("Login attempted with invalid credentials for user: '" + user + "'");
         
         return this;
 	}
