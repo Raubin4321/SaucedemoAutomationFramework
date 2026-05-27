@@ -20,13 +20,16 @@ public class ExcelUtil {
 
 			Sheet sheet = workbook.getSheet(sheetName);
 
-			int rows = sheet.getPhysicalNumberOfRows();
-			int cols = sheet.getRow(0).getPhysicalNumberOfCells();
+			int rows = sheet.getLastRowNum() + 1;
+			int cols = sheet.getRow(0).getLastCellNum();
 
 			data = new Object[rows - 1][cols];
 
 			for (int i = 1; i < rows; i++) {
 				Row row = sheet.getRow(i);
+				if (row == null) {
+					continue;
+				}
 
 				for (int j = 0; j < cols; j++) {
 					Cell cell = row.getCell(j);
@@ -51,21 +54,21 @@ public class ExcelUtil {
 
 		switch (cell.getCellType()) {
 
-			case STRING:
-				return cell.getStringCellValue();
-				
-			case NUMERIC:
-				if (DateUtil.isCellDateFormatted(cell)) {
-	                return cell.getDateCellValue().toString();
-	            } else {
-	                return String.valueOf((int)cell.getNumericCellValue());
-	            }
-				
-			case BOOLEAN:
-				return String.valueOf(cell.getBooleanCellValue());
-				
-			default:
-				return "";
+		case STRING:
+			return cell.getStringCellValue();
+
+		case NUMERIC:
+			if (DateUtil.isCellDateFormatted(cell)) {
+				return cell.getDateCellValue().toString();
+			} else {
+				return String.valueOf((int) cell.getNumericCellValue());
+			}
+
+		case BOOLEAN:
+			return String.valueOf(cell.getBooleanCellValue());
+
+		default:
+			return "";
 		}
 	}
 

@@ -50,9 +50,11 @@ public class DriverFactory {
 
 		try {
 			if(seleniumGrid) {
+				
 	            String gridURL = ConfigReader.getProperty("gridURL");
 	            log.info("Connecting to Selenium Grid at: [{}]", gridURL);
 	            webDriver = createRemoteDriver(browser, isHeadless, gridURL);
+	            
 	        } else {
 	        	switch (browser.toLowerCase()) {
 
